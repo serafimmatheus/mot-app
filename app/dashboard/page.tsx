@@ -3,15 +3,15 @@
 import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { OrganizerApp } from "@/components/organizer/organizer-app";
+import { DashboardApp } from "@/components/dashboard/dashboard-app";
 import { Spinner } from "@/components/ui/spinner";
 import { useSession } from "@/lib/auth-client";
 
-function OrganizerContent({ userName }: { userName?: string | null }) {
-  return <OrganizerApp userName={userName} />;
+function DashboardContent({ userName }: { userName?: string | null }) {
+  return <DashboardApp userName={userName} />;
 }
 
-export default function HomePage() {
+export default function DashboardPage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
 
@@ -41,7 +41,7 @@ export default function HomePage() {
         </div>
       }
     >
-      <OrganizerContent userName={session.user.name} />
+      <DashboardContent userName={session.user.name} />
     </Suspense>
   );
 }
