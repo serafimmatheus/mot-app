@@ -1,4 +1,4 @@
-import type { Task, WorkDay } from "@/lib/types";
+import type { Task, WorkDay } from "@/_lib/types";
 
 export type TaskSearchResult = {
   task: Task;
@@ -16,8 +16,7 @@ export function extractLinearCode(text: string): string | null {
 
 export function getTaskLinearCode(task: Task): string | null {
   return (
-    extractLinearCode(task.title) ??
-    extractLinearCode(task.description ?? "")
+    extractLinearCode(task.title) ?? extractLinearCode(task.description ?? "")
   );
 }
 
@@ -25,7 +24,10 @@ export function buildLinearIssueUrl(code: string): string {
   return `${LINEAR_ISSUE_BASE_URL}/${code}`;
 }
 
-export function searchTasks(days: WorkDay[], query: string): TaskSearchResult[] {
+export function searchTasks(
+  days: WorkDay[],
+  query: string,
+): TaskSearchResult[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return [];
 
@@ -33,7 +35,8 @@ export function searchTasks(days: WorkDay[], query: string): TaskSearchResult[] 
 
   for (const day of days) {
     for (const task of day.tasks) {
-      const searchable = `${task.title}\n${task.description ?? ""}`.toLowerCase();
+      const searchable =
+        `${task.title}\n${task.description ?? ""}`.toLowerCase();
       if (!searchable.includes(normalized)) continue;
 
       const code =

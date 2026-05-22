@@ -1,8 +1,5 @@
-import {
-  TASK_STATUS_CARD_CLASSES,
-  type TaskStatus,
-} from "@/lib/task-status";
-import { cn } from "@/lib/utils";
+import { TASK_STATUS_CARD_CLASSES, type TaskStatus } from "@/_lib/task-status";
+import { cn } from "@/_lib/utils";
 
 export function branchesFromDescription(description: string | null) {
   if (!description?.trim()) return [];
@@ -12,10 +9,7 @@ export function branchesFromDescription(description: string | null) {
     .filter(Boolean);
 }
 
-export function getTaskCardClassName(
-  status: TaskStatus,
-  highlighted = false,
-) {
+export function getTaskCardClassName(status: TaskStatus, highlighted = false) {
   return cn(
     TASK_STATUS_CARD_CLASSES[status],
     highlighted &&

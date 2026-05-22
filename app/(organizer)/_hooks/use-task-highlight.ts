@@ -3,11 +3,14 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import type { WorkDay } from "@/lib/types";
+import type { WorkDay } from "@/_lib/types";
 
 import type { TaskSearchResult } from "../_utils/search-tasks";
 
-export function useTaskHighlight(days: WorkDay[], selectedDayId: string | null) {
+export function useTaskHighlight(
+  days: WorkDay[],
+  selectedDayId: string | null,
+) {
   const searchParams = useSearchParams();
   const [highlightedTaskId, setHighlightedTaskId] = useState<string | null>(
     null,

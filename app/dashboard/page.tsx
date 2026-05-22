@@ -4,8 +4,8 @@ import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { DashboardApp } from "./_components/dashboard-app";
-import { Spinner } from "@/components/ui/spinner";
-import { useSession } from "@/lib/auth-client";
+import { Spinner } from "@/_components/ui/spinner";
+import { useSession } from "@/_lib/auth-client";
 
 function DashboardContent({ userName }: { userName?: string | null }) {
   return <DashboardApp userName={userName} />;

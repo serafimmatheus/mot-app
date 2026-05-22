@@ -5,17 +5,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/_components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signIn } from "@/lib/auth-client";
+} from "@/_components/ui/card";
+import { Input } from "@/_components/ui/input";
+import { Label } from "@/_components/ui/label";
+import { signIn } from "@/_lib/auth-client";
 
 export function LoginForm() {
   const router = useRouter();
@@ -56,9 +56,7 @@ export function LoginForm() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Entrar</CardTitle>
-          <CardDescription>
-            Acesse seu organizador de tarefas
-          </CardDescription>
+          <CardDescription>Acesse seu organizador de tarefas</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,7 +88,10 @@ export function LoginForm() {
           </form>
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Não tem conta?{" "}
-            <Link href="/register" className="text-primary underline-offset-4 hover:underline">
+            <Link
+              href="/register"
+              className="text-primary underline-offset-4 hover:underline"
+            >
               Criar conta
             </Link>
           </p>

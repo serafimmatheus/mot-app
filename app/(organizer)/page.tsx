@@ -3,8 +3,8 @@
 import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { Spinner } from "@/components/ui/spinner";
-import { useSession } from "@/lib/auth-client";
+import { Spinner } from "@/_components/ui/spinner";
+import { useSession } from "@/_lib/auth-client";
 
 import { OrganizerApp } from "./_components/organizer-app";
 

@@ -15,29 +15,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from "@/_components/ui/alert-dialog";
+import { Badge } from "@/_components/ui/badge";
+import { Button } from "@/_components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { AppHeader } from "@/components/app-header";
-import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
+} from "@/_components/ui/dialog";
+import { Input } from "@/_components/ui/input";
+import { Label } from "@/_components/ui/label";
+import { ScrollArea } from "@/_components/ui/scroll-area";
+import { Separator } from "@/_components/ui/separator";
+import { Textarea } from "@/_components/ui/textarea";
+import { AppHeader } from "@/_components/app-header";
+import { useDateRangeFilter } from "@/_hooks/use-date-range-filter";
 import {
   filterDaysByRange,
   HEADER_OFFSET_CLASS,
   HEADER_TOP_CLASS,
-} from "@/lib/date-range-filter";
-import type { Task, TaskStatus, WorkDay } from "@/lib/types";
+} from "@/_lib/date-range-filter";
+import type { Task, TaskStatus, WorkDay } from "@/_lib/types";
 
 import {
   createDay,
@@ -103,7 +103,8 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
     [days, range],
   );
 
-  const selectedDay = filteredDays.find((day) => day.id === selectedDayId) ?? null;
+  const selectedDay =
+    filteredDays.find((day) => day.id === selectedDayId) ?? null;
 
   const loadDays = useCallback(async () => {
     try {
@@ -111,11 +112,14 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
       setDays(data);
       setSelectedDayId((current) => {
         const inRange = filterDaysByRange(data, range);
-        if (current && inRange.some((day) => day.id === current)) return current;
+        if (current && inRange.some((day) => day.id === current))
+          return current;
         return inRange[0]?.id ?? null;
       });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao carregar dias");
+      toast.error(
+        error instanceof Error ? error.message : "Erro ao carregar dias",
+      );
     } finally {
       setLoading(false);
     }
@@ -161,7 +165,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
           date: dayForm.date,
           label: dayForm.label.trim() || undefined,
         });
-        setDays((prev) => [day, ...prev].sort((a, b) => b.date.localeCompare(a.date)));
+        setDays((prev) =>
+          [day, ...prev].sort((a, b) => b.date.localeCompare(a.date)),
+        );
         setSelectedDayId(day.id);
         toast.success("Dia criado");
       } else if (dayForm.dayId) {
@@ -178,7 +184,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
       }
       setDayForm((prev) => ({ ...prev, open: false }));
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao salvar dia");
+      toast.error(
+        error instanceof Error ? error.message : "Erro ao salvar dia",
+      );
     } finally {
       setSaving(false);
     }
@@ -222,7 +230,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
       }
       setTaskForm((prev) => ({ ...prev, open: false }));
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao salvar tarefa");
+      toast.error(
+        error instanceof Error ? error.message : "Erro ao salvar tarefa",
+      );
     } finally {
       setSaving(false);
     }
@@ -246,7 +256,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
             day.id === deleteTarget.dayId
               ? {
                   ...day,
-                  tasks: day.tasks.filter((task) => task.id !== deleteTarget.task.id),
+                  tasks: day.tasks.filter(
+                    (task) => task.id !== deleteTarget.task.id,
+                  ),
                 }
               : day,
           ),
@@ -261,7 +273,11 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
     }
   }
 
-  async function handleStatusChange(taskId: string, dayId: string, status: TaskStatus) {
+  async function handleStatusChange(
+    taskId: string,
+    dayId: string,
+    status: TaskStatus,
+  ) {
     try {
       const task = await updateTask(taskId, { status });
       setDays((prev) =>
@@ -278,7 +294,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
       );
       toast.success("Status atualizado");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao atualizar status");
+      toast.error(
+        error instanceof Error ? error.message : "Erro ao atualizar status",
+      );
     }
   }
 
@@ -356,7 +374,8 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
                           : "text-muted-foreground"
                       }`}
                     >
-                      {format(parseISO(day.date), "dd/MM/yyyy")} · {day.tasks.length}{" "}
+                      {format(parseISO(day.date), "dd/MM/yyyy")} ·{" "}
+                      {day.tasks.length}{" "}
                       {day.tasks.length === 1 ? "tarefa" : "tarefas"}
                     </div>
                   </button>
@@ -368,113 +387,115 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
 
         <main className="min-h-0 flex-1 overflow-y-auto pt-44 md:ml-80 md:pt-0">
           <div className="p-4 md:p-6">
-          {!selectedDay ? (
-            <div className="flex h-full min-h-[320px] items-center justify-center rounded-xl border border-dashed">
-              <div className="text-center">
-                <CalendarDays className="mx-auto mb-3 size-8 text-muted-foreground" />
-                <p className="font-medium">Selecione ou crie um dia</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Organize suas tarefas do Linear e branches por dia de trabalho
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-semibold">
-                    {formatDayTitle(selectedDay)}
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    {selectedDay.tasks.length}{" "}
-                    {selectedDay.tasks.length === 1 ? "tarefa" : "tarefas"}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      setDayForm({
-                        open: true,
-                        mode: "edit",
-                        dayId: selectedDay.id,
-                        date: selectedDay.date,
-                        label: selectedDay.label ?? "",
-                      })
-                    }
-                  >
-                    <Pencil className="size-4" />
-                    Editar dia
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() =>
-                      setDeleteTarget({ type: "day", day: selectedDay })
-                    }
-                  >
-                    <Trash2 className="size-4" />
-                    Excluir dia
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      setTaskForm({
-                        open: true,
-                        mode: "create",
-                        title: "",
-                        description: "",
-                      })
-                    }
-                  >
-                    <Plus className="size-4" />
-                    Nova tarefa
-                  </Button>
-                </div>
-              </div>
-
-              <Separator />
-
-              {selectedDay.tasks.length === 0 ? (
-                <div className="rounded-xl border border-dashed p-8 text-center">
-                  <p className="font-medium">Nenhuma tarefa neste dia</p>
+            {!selectedDay ? (
+              <div className="flex h-full min-h-[320px] items-center justify-center rounded-xl border border-dashed">
+                <div className="text-center">
+                  <CalendarDays className="mx-auto mb-3 size-8 text-muted-foreground" />
+                  <p className="font-medium">Selecione ou crie um dia</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Adicione o nome da task do Linear e as branches na descrição
+                    Organize suas tarefas do Linear e branches por dia de
+                    trabalho
                   </p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {selectedDay.tasks.map((task) => (
-                    <TaskCard
-                      key={task.id}
-                      task={task}
-                      dayId={selectedDay.id}
-                      highlighted={highlightedTaskId === task.id}
-                      onStatusChange={handleStatusChange}
-                      onEdit={(editedTask) =>
-                        setTaskForm({
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-semibold">
+                      {formatDayTitle(selectedDay)}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {selectedDay.tasks.length}{" "}
+                      {selectedDay.tasks.length === 1 ? "tarefa" : "tarefas"}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setDayForm({
                           open: true,
                           mode: "edit",
-                          taskId: editedTask.id,
-                          title: editedTask.title,
-                          description: editedTask.description ?? "",
+                          dayId: selectedDay.id,
+                          date: selectedDay.date,
+                          label: selectedDay.label ?? "",
                         })
                       }
-                      onDelete={(deletedTask, dayId) =>
-                        setDeleteTarget({
-                          type: "task",
-                          task: deletedTask,
-                          dayId,
+                    >
+                      <Pencil className="size-4" />
+                      Editar dia
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() =>
+                        setDeleteTarget({ type: "day", day: selectedDay })
+                      }
+                    >
+                      <Trash2 className="size-4" />
+                      Excluir dia
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        setTaskForm({
+                          open: true,
+                          mode: "create",
+                          title: "",
+                          description: "",
                         })
                       }
-                      onCopyBranch={copyBranch}
-                    />
-                  ))}
+                    >
+                      <Plus className="size-4" />
+                      Nova tarefa
+                    </Button>
+                  </div>
                 </div>
-              )}
-            </div>
-          )}
+
+                <Separator />
+
+                {selectedDay.tasks.length === 0 ? (
+                  <div className="rounded-xl border border-dashed p-8 text-center">
+                    <p className="font-medium">Nenhuma tarefa neste dia</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Adicione o nome da task do Linear e as branches na
+                      descrição
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {selectedDay.tasks.map((task) => (
+                      <TaskCard
+                        key={task.id}
+                        task={task}
+                        dayId={selectedDay.id}
+                        highlighted={highlightedTaskId === task.id}
+                        onStatusChange={handleStatusChange}
+                        onEdit={(editedTask) =>
+                          setTaskForm({
+                            open: true,
+                            mode: "edit",
+                            taskId: editedTask.id,
+                            title: editedTask.title,
+                            description: editedTask.description ?? "",
+                          })
+                        }
+                        onDelete={(deletedTask, dayId) =>
+                          setDeleteTarget({
+                            type: "task",
+                            task: deletedTask,
+                            dayId,
+                          })
+                        }
+                        onCopyBranch={copyBranch}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </main>
       </div>

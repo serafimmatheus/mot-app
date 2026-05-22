@@ -1,5 +1,5 @@
-import type { TaskStatus, Task, WorkDay } from "@/lib/types";
-import { TASK_STATUSES } from "@/lib/task-status";
+import type { TaskStatus, Task, WorkDay } from "@/_lib/types";
+import { TASK_STATUSES } from "@/_lib/task-status";
 
 export type TaskWithDay = {
   task: Task;

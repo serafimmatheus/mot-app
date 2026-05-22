@@ -3,15 +3,15 @@
 import { ExternalLink, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/_components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { buildLinearIssueUrl, getTaskLinearCode } from "@/lib/search-tasks";
-import type { Task } from "@/lib/types";
-import { cn } from "@/lib/utils";
+} from "@/_components/ui/popover";
+import { buildLinearIssueUrl, getTaskLinearCode } from "@/_lib/search-tasks";
+import type { Task } from "@/_lib/types";
+import { cn } from "@/_lib/utils";
 
 const menuItemClassName =
   "flex w-full items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground";
@@ -34,11 +34,7 @@ export function TaskActionsPopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Ações da tarefa"
-        >
+        <Button variant="ghost" size="icon-sm" aria-label="Ações da tarefa">
           <MoreHorizontal className="size-4" />
         </Button>
       </PopoverTrigger>

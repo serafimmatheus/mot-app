@@ -1,43 +1,49 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { ArrowUpRight, CheckCircle2, FileEdit, GitPullRequest, Rocket } from "lucide-react";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  FileEdit,
+  GitPullRequest,
+  Rocket,
+} from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
-import { AppHeader } from "@/components/app-header";
-import { TaskStatusBadge } from "@/components/task-status-select";
+import { AppHeader } from "@/_components/app-header";
+import { TaskStatusBadge } from "@/_components/task-status-select";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/_components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
-import { listDays } from "@/lib/api";
+} from "@/_components/ui/chart";
+import { ScrollArea } from "@/_components/ui/scroll-area";
+import { useDateRangeFilter } from "@/_hooks/use-date-range-filter";
+import { listDays } from "@/_lib/api";
 import {
   filterDaysByRange,
   formatDateRangeLabel,
   HEADER_OFFSET_CLASS,
-} from "@/lib/date-range-filter";
-import { extractLinearCode } from "@/lib/search-tasks";
+} from "@/_lib/date-range-filter";
+import { extractLinearCode } from "@/_lib/search-tasks";
 import {
   TASK_STATUS_CHART_COLORS,
   TASK_STATUS_LABELS,
   TASK_STATUSES,
   type TaskStatus,
-} from "@/lib/task-status";
-import type { WorkDay } from "@/lib/types";
+} from "@/_lib/task-status";
+import type { WorkDay } from "@/_lib/types";
 
 import { computeDashboardStats } from "../_utils/dashboard-stats";
 
@@ -107,7 +113,11 @@ export function DashboardApp({ userName }: DashboardAppProps) {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
-      <AppHeader userName={userName} days={filteredDays} activeNav="dashboard" />
+      <AppHeader
+        userName={userName}
+        days={filteredDays}
+        activeNav="dashboard"
+      />
 
       <main className={`flex-1 overflow-y-auto ${HEADER_OFFSET_CLASS}`}>
         <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-6">
@@ -160,7 +170,9 @@ export function DashboardApp({ userName }: DashboardAppProps) {
                           >
                             <Icon
                               className="size-4"
-                              style={{ color: TASK_STATUS_CHART_COLORS[item.status] }}
+                              style={{
+                                color: TASK_STATUS_CHART_COLORS[item.status],
+                              }}
                             />
                           </div>
                         </div>
@@ -186,7 +198,10 @@ export function DashboardApp({ userName }: DashboardAppProps) {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ChartContainer config={chartConfig} className="h-[280px] w-full">
+                  <ChartContainer
+                    config={chartConfig}
+                    className="h-[280px] w-full"
+                  >
                     <BarChart data={chartData} margin={{ left: 0, right: 8 }}>
                       <CartesianGrid vertical={false} />
                       <XAxis
@@ -196,7 +211,11 @@ export function DashboardApp({ userName }: DashboardAppProps) {
                         interval={0}
                         tick={{ fontSize: 11 }}
                       />
-                      <YAxis allowDecimals={false} tickLine={false} axisLine={false} />
+                      <YAxis
+                        allowDecimals={false}
+                        tickLine={false}
+                        axisLine={false}
+                      />
                       <ChartTooltip
                         cursor={false}
                         content={
@@ -223,7 +242,10 @@ export function DashboardApp({ userName }: DashboardAppProps) {
 
               <div className="grid min-w-0 gap-4 lg:grid-cols-2">
                 {stats.byStatus.map((item) => (
-                  <Card key={item.status} className="flex min-w-0 flex-col overflow-hidden">
+                  <Card
+                    key={item.status}
+                    className="flex min-w-0 flex-col overflow-hidden"
+                  >
                     <CardHeader className="shrink-0 border-b">
                       <div className="flex items-center justify-between gap-3">
                         <div>
@@ -259,7 +281,10 @@ export function DashboardApp({ userName }: DashboardAppProps) {
                                 format(parseISO(day.date), "dd/MM/yyyy");
 
                               return (
-                                <li key={task.id} className="w-full max-w-full min-w-0">
+                                <li
+                                  key={task.id}
+                                  className="w-full max-w-full min-w-0"
+                                >
                                   <Link
                                     href={buildOrganizerHref(day.id, task.id)}
                                     className="flex w-full max-w-full min-w-0 items-start gap-3 overflow-hidden rounded-lg border px-3 py-2 transition-colors hover:bg-muted/50"

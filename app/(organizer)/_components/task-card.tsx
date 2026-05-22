@@ -2,16 +2,16 @@
 
 import { Copy, GitBranch } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/_components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { TaskStatusSelect } from "@/components/task-status-select";
-import type { Task, TaskStatus } from "@/lib/types";
+} from "@/_components/ui/card";
+import { TaskStatusSelect } from "@/_components/task-status-select";
+import type { Task, TaskStatus } from "@/_lib/types";
 
 import { TaskActionsPopover } from "./task-actions-popover";
 import {

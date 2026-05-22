@@ -5,17 +5,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/_components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signUp } from "@/lib/auth-client";
+} from "@/_components/ui/card";
+import { Input } from "@/_components/ui/input";
+import { Label } from "@/_components/ui/label";
+import { signUp } from "@/_lib/auth-client";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -102,7 +102,10 @@ export function RegisterForm() {
           </form>
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Já tem conta?{" "}
-            <Link href="/login" className="text-primary underline-offset-4 hover:underline">
+            <Link
+              href="/login"
+              className="text-primary underline-offset-4 hover:underline"
+            >
               Entrar
             </Link>
           </p>

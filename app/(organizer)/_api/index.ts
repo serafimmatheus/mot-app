@@ -1,11 +1,8 @@
-import type { ApiError, Task, TaskStatus, WorkDay } from "@/lib/types";
+import type { ApiError, Task, TaskStatus, WorkDay } from "@/_lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5555";
 
-async function request<T>(
-  path: string,
-  init?: RequestInit,
-): Promise<T> {
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const hasBody = init?.body !== undefined && init?.body !== null;
 
   const response = await fetch(`${apiUrl}${path}`, {
