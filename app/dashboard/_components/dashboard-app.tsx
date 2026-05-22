@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   FileEdit,
   GitPullRequest,
+  ListTodo,
   Rocket,
 } from "lucide-react";
 import Link from "next/link";
@@ -152,6 +153,26 @@ export function DashboardApp({ userName }: DashboardAppProps) {
             </Card>
           ) : (
             <>
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <CardDescription>Total de tarefas no período</CardDescription>
+                    <div className="rounded-md bg-primary/10 p-2">
+                      <ListTodo className="size-4 text-primary" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-3xl tabular-nums">
+                    {stats.total}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    {stats.total === 1 ? "tarefa" : "tarefas"} em{" "}
+                    {getRangeLabel(range)}
+                  </p>
+                </CardContent>
+              </Card>
+
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {stats.byStatus.map((item) => {
                   const Icon = STATUS_ICONS[item.status];
