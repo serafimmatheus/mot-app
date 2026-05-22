@@ -2,14 +2,7 @@
 
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import {
-  CalendarDays,
-  Copy,
-  GitBranch,
-  Pencil,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { CalendarDays, Copy, GitBranch, Pencil, Plus, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -64,6 +57,7 @@ import type { Task, TaskStatus, WorkDay } from "@/lib/types";
 
 import { AppHeader } from "@/components/app/app-header";
 import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
+import { TaskActionsPopover } from "./task-actions-popover";
 import { TaskStatusSelect } from "./task-status-select";
 
 function formatDayTitle(day: WorkDay) {
@@ -539,38 +533,25 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
                                 </CardDescription>
                               ) : null}
                             </div>
-                            <div className="flex gap-1">
-                              <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                aria-label="Editar tarefa"
-                                onClick={() =>
-                                  setTaskForm({
-                                    open: true,
-                                    mode: "edit",
-                                    taskId: task.id,
-                                    title: task.title,
-                                    description: task.description ?? "",
-                                  })
-                                }
-                              >
-                                <Pencil className="size-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                aria-label="Excluir tarefa"
-                                onClick={() =>
-                                  setDeleteTarget({
-                                    type: "task",
-                                    task,
-                                    dayId: selectedDay.id,
-                                  })
-                                }
-                              >
-                                <Trash2 className="size-4" />
-                              </Button>
-                            </div>
+                            <TaskActionsPopover
+                              task={task}
+                              onEdit={() =>
+                                setTaskForm({
+                                  open: true,
+                                  mode: "edit",
+                                  taskId: task.id,
+                                  title: task.title,
+                                  description: task.description ?? "",
+                                })
+                              }
+                              onDelete={() =>
+                                setDeleteTarget({
+                                  type: "task",
+                                  task,
+                                  dayId: selectedDay.id,
+                                })
+                              }
+                            />
                           </div>
                         </CardHeader>
                         {branches.length > 0 ? (

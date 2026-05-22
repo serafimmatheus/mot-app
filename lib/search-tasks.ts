@@ -7,10 +7,22 @@ export type TaskSearchResult = {
 };
 
 const LINEAR_CODE_RE = /SHURIDW-\d+/gi;
+const LINEAR_ISSUE_BASE_URL = "https://linear.app/contraktorx/issue";
 
 export function extractLinearCode(text: string): string | null {
   const match = text.match(LINEAR_CODE_RE);
   return match?.[0]?.toUpperCase() ?? null;
+}
+
+export function getTaskLinearCode(task: Task): string | null {
+  return (
+    extractLinearCode(task.title) ??
+    extractLinearCode(task.description ?? "")
+  );
+}
+
+export function buildLinearIssueUrl(code: string): string {
+  return `${LINEAR_ISSUE_BASE_URL}/${code}`;
 }
 
 export function searchTasks(days: WorkDay[], query: string): TaskSearchResult[] {

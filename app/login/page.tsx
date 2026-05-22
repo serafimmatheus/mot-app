@@ -27,16 +27,23 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
 
-    const { error } = await signIn.email({
-      email,
-      password,
-    });
+    try {
+      const { error } = await signIn.email({
+        email,
+        password,
+      });
 
-    setLoading(false);
-
-    if (error) {
-      toast.error(error.message ?? "Não foi possível entrar");
+      if (error) {
+        toast.error(error.message ?? "Não foi possível entrar");
+        return;
+      }
+    } catch {
+      toast.error(
+        "Não foi possível conectar à API. Verifique se o mot-api está rodando em localhost:5555.",
+      );
       return;
+    } finally {
+      setLoading(false);
     }
 
     toast.success("Bem-vindo de volta!");

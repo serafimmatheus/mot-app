@@ -28,17 +28,24 @@ export default function RegisterPage() {
     event.preventDefault();
     setLoading(true);
 
-    const { error } = await signUp.email({
-      name,
-      email,
-      password,
-    });
+    try {
+      const { error } = await signUp.email({
+        name,
+        email,
+        password,
+      });
 
-    setLoading(false);
-
-    if (error) {
-      toast.error(error.message ?? "Não foi possível criar a conta");
+      if (error) {
+        toast.error(error.message ?? "Não foi possível criar a conta");
+        return;
+      }
+    } catch {
+      toast.error(
+        "Não foi possível conectar à API. Verifique se o mot-api está rodando em localhost:5555.",
+      );
       return;
+    } finally {
+      setLoading(false);
     }
 
     toast.success("Conta criada com sucesso!");
