@@ -6,4 +6,4 @@ export {
   listDays,
   updateDay,
   updateTask,
-} from "@/components/organizer/_api";
+} from "@/app/(organizer)/_api";

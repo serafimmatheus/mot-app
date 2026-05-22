@@ -3,7 +3,7 @@
 import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { DashboardApp } from "@/components/dashboard/dashboard-app";
+import { DashboardApp } from "./_components/dashboard-app";
 import { Spinner } from "@/components/ui/spinner";
 import { useSession } from "@/lib/auth-client";
 

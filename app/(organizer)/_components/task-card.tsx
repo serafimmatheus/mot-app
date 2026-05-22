@@ -10,10 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { TaskStatusSelect } from "@/components/task-status-select";
 import type { Task, TaskStatus } from "@/lib/types";
 
-import { TaskActionsPopover } from "../task-actions-popover";
-import { TaskStatusSelect } from "../task-status-select";
+import { TaskActionsPopover } from "./task-actions-popover";
 import {
   branchesFromDescription,
   getTaskCardClassName,

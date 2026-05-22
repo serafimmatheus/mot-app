@@ -7,8 +7,8 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
-import { AppHeader } from "@/components/app/app-header";
-import { TaskStatusBadge } from "@/components/organizer/task-status-select";
+import { AppHeader } from "@/components/app-header";
+import { TaskStatusBadge } from "@/components/task-status-select";
 import {
   Card,
   CardContent,
@@ -25,7 +25,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
 import { listDays } from "@/lib/api";
-import { computeDashboardStats } from "@/lib/dashboard-stats";
 import {
   filterDaysByRange,
   formatDateRangeLabel,
@@ -39,6 +38,8 @@ import {
   type TaskStatus,
 } from "@/lib/task-status";
 import type { WorkDay } from "@/lib/types";
+
+import { computeDashboardStats } from "../_utils/dashboard-stats";
 
 const STATUS_ICONS: Record<TaskStatus, typeof FileEdit> = {
   EM_DESENVOLVIMENTO: FileEdit,

@@ -30,6 +30,15 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { AppHeader } from "@/components/app-header";
+import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
+import {
+  filterDaysByRange,
+  HEADER_OFFSET_CLASS,
+  HEADER_TOP_CLASS,
+} from "@/lib/date-range-filter";
+import type { Task, TaskStatus, WorkDay } from "@/lib/types";
+
 import {
   createDay,
   createTask,
@@ -38,20 +47,11 @@ import {
   listDays,
   updateDay,
   updateTask,
-} from "./_api";
-import { formatDayTitle } from "./_utils/format-day-title";
-import type { TaskSearchResult } from "./_utils/search-tasks";
-import {
-  filterDaysByRange,
-  HEADER_OFFSET_CLASS,
-  HEADER_TOP_CLASS,
-} from "@/lib/date-range-filter";
-import type { Task, TaskStatus, WorkDay } from "@/lib/types";
-
-import { AppHeader } from "@/components/app/app-header";
-import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
-import { TaskCard } from "./_components/task-card";
-import { useTaskHighlight } from "./_hooks/use-task-highlight";
+} from "../_api";
+import { TaskCard } from "./task-card";
+import { useTaskHighlight } from "../_hooks/use-task-highlight";
+import { formatDayTitle } from "../_utils/format-day-title";
+import type { TaskSearchResult } from "../_utils/search-tasks";
 
 type DayFormState = {
   open: boolean;

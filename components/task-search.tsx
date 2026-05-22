@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { searchTasks, type TaskSearchResult } from "./_utils/search-tasks";
+import { searchTasks, type TaskSearchResult } from "@/lib/search-tasks";
 import { TASK_STATUS_LABELS } from "@/lib/task-status";
 import type { WorkDay } from "@/lib/types";
 

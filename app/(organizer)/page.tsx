@@ -3,9 +3,10 @@
 import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { OrganizerApp } from "@/components/organizer/organizer-app";
 import { Spinner } from "@/components/ui/spinner";
 import { useSession } from "@/lib/auth-client";
+
+import { OrganizerApp } from "./_components/organizer-app";
 
 function OrganizerContent({ userName }: { userName?: string | null }) {
   return <OrganizerApp userName={userName} />;

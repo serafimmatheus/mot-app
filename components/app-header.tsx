@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LayoutDashboard, ListTodo, LogOut } from "lucide-react";
 
-import { DateRangeFilterBar } from "@/components/app/date-range-filter";
-import { TaskSearch } from "@/components/organizer/task-search";
+import { DateRangeFilterBar } from "@/components/date-range-filter";
+import { TaskSearch } from "@/components/task-search";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/lib/auth-client";

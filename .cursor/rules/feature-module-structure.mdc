@@ -1,53 +1,87 @@
 ---
-description: Estrutura de módulos de feature em components/
-globs: mot-app/components/**/*
+description: Estrutura de páginas e componentes globais no mot-app
+globs: mot-app/app/**/*,mot-app/components/**/*
 alwaysApply: false
 ---
 
-# Módulos de feature (mot-app)
+# Estrutura do mot-app
 
-Cada feature vive em `components/<feature>/` com pastas internas prefixadas por `_`.
+## Componentes globais (`components/`)
 
-## Estrutura
+Apenas componentes reutilizados entre rotas:
 
 ```
-components/organizer/
-├── _api/           # Chamadas HTTP da feature
-├── _components/    # Componentes compostos (ex.: task-card)
-├── _hooks/         # Hooks específicos da feature
-├── _utils/         # Funções puras e helpers
-├── organizer-app.tsx       # Entry point / container principal
-├── task-actions-popover.tsx  # Componentes leaf exportados
+components/
+├── app-header.tsx
+├── date-range-filter.tsx
 ├── task-search.tsx
-└── task-status-select.tsx
+├── task-status-select.tsx
+└── ui/              # shadcn
 ```
 
-## Regras
+## Páginas (`app/`)
 
-- **`_api/`**: fetch e funções de API usadas só pela feature. Outros módulos importam via `@/lib/api` (re-export).
-- **`_components/`**: blocos de UI maiores montados pelo container. Não colocar o entry point aqui.
-- **`_hooks/`**: lógica de estado/efeitos específica da feature (ex.: highlight de tarefa).
-- **`_utils/`**: helpers puros (formatação, parsing, classes CSS derivadas).
-- **Raiz da feature**: entry point (`*-app.tsx`) e componentes leaf reutilizados fora do container.
+Cada rota tem sua própria pasta com módulos co-localizados. **Não** criar `_api`, `_components`, `_hooks` ou `_utils` soltos na raiz de `app/`.
+
+A home (`/`) usa route group `(organizer)` — parênteses não entram na URL:
+
+```
+app/
+├── page.tsx           # home (/) — importa de (organizer)/_components
+├── layout.tsx
+├── (organizer)/
+│   ├── _api/
+│   ├── _components/
+│   ├── _hooks/
+│   └── _utils/
+├── dashboard/
+│   ├── _api/
+│   ├── _components/
+│   ├── _hooks/
+│   ├── _utils/
+│   └── page.tsx
+├── login/
+│   └── ...
+└── register/
+    └── ...
+```
+
+Pastas prefixadas com `_` não viram rotas no App Router.
+
+## Regras por pasta
+
+- **`page.tsx`**: entry point da rota — auth, Suspense, composição mínima.
+- **`_components/`**: UI específica da página (ex.: `organizer-app.tsx`, `dashboard-app.tsx`).
+- **`_api/`**: chamadas HTTP usadas só nesta rota. Re-export em `@/lib/api` quando compartilhado.
+- **`_hooks/`**: hooks de estado/efeitos específicos da rota.
+- **`_utils/`**: funções puras e helpers da rota.
 
 ## Imports
 
-Dentro da feature, preferir imports relativos às pastas `_`:
+Dentro da rota, preferir imports relativos:
 
 ```tsx
 import { TaskCard } from "./_components/task-card";
-import { listDays } from "./_api";
-import { formatDayTitle } from "./_utils/format-day-title";
-import { useTaskHighlight } from "./_hooks/use-task-highlight";
+import { listDays } from "../_api";
+import { formatDayTitle } from "../_utils/format-day-title";
 ```
 
-Fora da feature, importar pelo caminho público na raiz:
+Fora da rota, usar `@/components/*` para globais e `@/lib/*` para re-exports:
 
 ```tsx
-import { OrganizerApp } from "@/components/organizer/organizer-app";
-import { TaskSearch } from "@/components/organizer/task-search";
+import { AppHeader } from "@/components/app-header";
+import { listDays } from "@/lib/api";
 ```
 
-## Novas features
+## Nova página
 
-Ao criar `dashboard`, `settings`, etc., replicar o mesmo padrão com `_api`, `_components`, `_hooks`, `_utils` e um `*-app.tsx` na raiz.
+Ao criar `/settings`, replicar:
+
+```
+app/settings/
+├── _components/
+├── _api/
+├── _hooks/
+├── _utils/
+└── page.tsx
+```

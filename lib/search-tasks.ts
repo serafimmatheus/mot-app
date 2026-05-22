@@ -4,4 +4,4 @@ export {
   getTaskLinearCode,
   searchTasks,
   type TaskSearchResult,
-} from "@/components/organizer/_utils/search-tasks";
+} from "@/app/(organizer)/_utils/search-tasks";
