@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Meu Organizador de Tasks",
+  title: "OmniTasks",
   description: "Organize tarefas do Linear e branches por dia de trabalho",
 };
 

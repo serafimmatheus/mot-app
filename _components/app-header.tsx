@@ -71,7 +71,7 @@ export function AppHeader({
         <div className="flex min-w-0 items-center gap-2 md:gap-4">
           <div className="hidden min-w-0 sm:block">
             <h1 className="truncate text-sm font-semibold tracking-tight md:text-base">
-              Meu Organizador de Tasks
+              OmniTasks
             </h1>
             {userName ? (
               <p className="truncate text-xs text-muted-foreground">
