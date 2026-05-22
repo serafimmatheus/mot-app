@@ -1,10 +1,9 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { CalendarDays, Copy, GitBranch, Pencil, Plus, Trash2 } from "lucide-react";
+import { CalendarDays, Pencil, Plus, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -19,13 +18,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -46,34 +38,20 @@ import {
   listDays,
   updateDay,
   updateTask,
-} from "@/lib/api";
+} from "./_api";
+import { formatDayTitle } from "./_utils/format-day-title";
+import type { TaskSearchResult } from "./_utils/search-tasks";
 import {
   filterDaysByRange,
   HEADER_OFFSET_CLASS,
   HEADER_TOP_CLASS,
 } from "@/lib/date-range-filter";
-import type { TaskSearchResult } from "@/lib/search-tasks";
 import type { Task, TaskStatus, WorkDay } from "@/lib/types";
 
 import { AppHeader } from "@/components/app/app-header";
 import { useDateRangeFilter } from "@/hooks/use-date-range-filter";
-import { TaskActionsPopover } from "./task-actions-popover";
-import { TaskStatusSelect } from "./task-status-select";
-
-function formatDayTitle(day: WorkDay) {
-  const dateLabel = format(parseISO(day.date), "dd/MM/yyyy (EEEE)", {
-    locale: ptBR,
-  });
-  return day.label ? `${day.label} — ${dateLabel}` : dateLabel;
-}
-
-function branchesFromDescription(description: string | null) {
-  if (!description?.trim()) return [];
-  return description
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-}
+import { TaskCard } from "./_components/task-card";
+import { useTaskHighlight } from "./_hooks/use-task-highlight";
 
 type DayFormState = {
   open: boolean;
@@ -115,11 +93,9 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
   });
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
   const [saving, setSaving] = useState(false);
-  const [highlightedTaskId, setHighlightedTaskId] = useState<string | null>(
-    null,
-  );
-  const highlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
+  const { highlightedTaskId, highlightFromSearch } = useTaskHighlight(
+    days,
+    selectedDayId,
   );
 
   const filteredDays = useMemo(
@@ -165,42 +141,16 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
 
   useEffect(() => {
     const dayId = searchParams.get("day");
-    const taskId = searchParams.get("task");
     if (!dayId || days.length === 0) return;
 
     if (days.some((day) => day.id === dayId)) {
       setSelectedDayId(dayId);
     }
-
-    if (taskId) {
-      setHighlightedTaskId(taskId);
-    }
   }, [searchParams, days]);
-
-  useEffect(() => {
-    if (!highlightedTaskId) return;
-
-    const element = document.getElementById(`task-${highlightedTaskId}`);
-    element?.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    if (highlightTimeoutRef.current) {
-      clearTimeout(highlightTimeoutRef.current);
-    }
-
-    highlightTimeoutRef.current = setTimeout(() => {
-      setHighlightedTaskId(null);
-    }, 3000);
-
-    return () => {
-      if (highlightTimeoutRef.current) {
-        clearTimeout(highlightTimeoutRef.current);
-      }
-    };
-  }, [highlightedTaskId, selectedDayId]);
 
   function handleSearchSelect(result: TaskSearchResult) {
     setSelectedDayId(result.day.id);
-    setHighlightedTaskId(result.task.id);
+    highlightFromSearch(result);
   }
 
   async function handleSaveDay() {
@@ -495,96 +445,32 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {selectedDay.tasks.map((task) => {
-                    const branches = branchesFromDescription(task.description);
-                    return (
-                      <Card
-                        key={task.id}
-                        id={`task-${task.id}`}
-                        className={
-                          highlightedTaskId === task.id
-                            ? "ring-2 ring-primary ring-offset-2 ring-offset-background transition-shadow"
-                            : undefined
-                        }
-                      >
-                        <CardHeader className="border-b">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0 space-y-2">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <CardTitle className="min-w-0">
-                                  {task.title}
-                                </CardTitle>
-                                <TaskStatusSelect
-                                  compact
-                                  value={task.status}
-                                  onChange={(status) =>
-                                    void handleStatusChange(
-                                      task.id,
-                                      selectedDay.id,
-                                      status,
-                                    )
-                                  }
-                                />
-                              </div>
-                              {branches.length > 0 ? (
-                                <CardDescription>
-                                  {branches.length}{" "}
-                                  {branches.length === 1 ? "branch" : "branches"}
-                                </CardDescription>
-                              ) : null}
-                            </div>
-                            <TaskActionsPopover
-                              task={task}
-                              onEdit={() =>
-                                setTaskForm({
-                                  open: true,
-                                  mode: "edit",
-                                  taskId: task.id,
-                                  title: task.title,
-                                  description: task.description ?? "",
-                                })
-                              }
-                              onDelete={() =>
-                                setDeleteTarget({
-                                  type: "task",
-                                  task,
-                                  dayId: selectedDay.id,
-                                })
-                              }
-                            />
-                          </div>
-                        </CardHeader>
-                        {branches.length > 0 ? (
-                          <CardContent className="space-y-2 pt-4">
-                            {branches.map((branch) => (
-                              <div
-                                key={branch}
-                                className="flex items-center justify-between gap-2 rounded-lg bg-muted/50 px-3 py-2 font-mono text-sm"
-                              >
-                                <div className="flex min-w-0 items-center gap-2">
-                                  <GitBranch className="size-3.5 shrink-0 text-muted-foreground" />
-                                  <span className="truncate">{branch}</span>
-                                </div>
-                                <Button
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  onClick={() => void copyBranch(branch)}
-                                >
-                                  <Copy className="size-4" />
-                                </Button>
-                              </div>
-                            ))}
-                          </CardContent>
-                        ) : task.description ? (
-                          <CardContent className="pt-4">
-                            <pre className="whitespace-pre-wrap font-mono text-sm text-muted-foreground">
-                              {task.description}
-                            </pre>
-                          </CardContent>
-                        ) : null}
-                      </Card>
-                    );
-                  })}
+                  {selectedDay.tasks.map((task) => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      dayId={selectedDay.id}
+                      highlighted={highlightedTaskId === task.id}
+                      onStatusChange={handleStatusChange}
+                      onEdit={(editedTask) =>
+                        setTaskForm({
+                          open: true,
+                          mode: "edit",
+                          taskId: editedTask.id,
+                          title: editedTask.title,
+                          description: editedTask.description ?? "",
+                        })
+                      }
+                      onDelete={(deletedTask, dayId) =>
+                        setDeleteTarget({
+                          type: "task",
+                          task: deletedTask,
+                          dayId,
+                        })
+                      }
+                      onCopyBranch={copyBranch}
+                    />
+                  ))}
                 </div>
               )}
             </div>

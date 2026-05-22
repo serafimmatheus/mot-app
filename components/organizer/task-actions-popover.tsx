@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { buildLinearIssueUrl, getTaskLinearCode } from "@/lib/search-tasks";
+import { buildLinearIssueUrl, getTaskLinearCode } from "./_utils/search-tasks";
 import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 

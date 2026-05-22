@@ -37,3 +37,10 @@ export const TASK_STATUS_CHART_COLORS: Record<TaskStatus, string> = {
   MR_ABERTA_PROD: "hsl(38 92% 50%)",
   CONCLUIDA: "hsl(142 71% 45%)",
 };
+
+export const TASK_STATUS_CARD_CLASSES: Record<TaskStatus, string> = {
+  EM_DESENVOLVIMENTO: "border-muted-foreground/25 bg-muted/30",
+  ENVIADO_STG: "border-blue-500/35 bg-blue-500/10",
+  MR_ABERTA_PROD: "border-amber-500/35 bg-amber-500/10",
+  CONCLUIDA: "border-emerald-500/35 bg-emerald-500/10",
+};
