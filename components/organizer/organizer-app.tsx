@@ -246,7 +246,7 @@ export function OrganizerApp({ userName }: { userName?: string | null }) {
         setDays((prev) =>
           prev.map((day) =>
             day.id === selectedDay.id
-              ? { ...day, tasks: [...day.tasks, task] }
+              ? { ...day, tasks: [task, ...day.tasks] }
               : day,
           ),
         );
