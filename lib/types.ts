@@ -1,5 +1,5 @@
 export type TaskStatus =
-  | "RASCUNHO"
+  | "EM_DESENVOLVIMENTO"
   | "ENVIADO_STG"
   | "MR_ABERTA_PROD"
   | "CONCLUIDA";

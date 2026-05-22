@@ -41,7 +41,7 @@ import {
 import type { WorkDay } from "@/lib/types";
 
 const STATUS_ICONS: Record<TaskStatus, typeof FileEdit> = {
-  RASCUNHO: FileEdit,
+  EM_DESENVOLVIMENTO: FileEdit,
   ENVIADO_STG: Rocket,
   MR_ABERTA_PROD: GitPullRequest,
   CONCLUIDA: CheckCircle2,
